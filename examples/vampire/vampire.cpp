@@ -2,7 +2,7 @@
 
 Vampire::Vampire()
 {
-    TinyGameLibrary tgl(320, 200, 3);
+    /*TinyGameLibrary tgl(320, 200, 3);
 
     enum Object : TGL_Id { Hero, HUD, Floor, Skull };
     vector<TGL_ObjectDefinition> spriteDefinitions = {
@@ -34,7 +34,7 @@ Vampire::Vampire()
     };
     tgl.setLevels(levels, 16, 17);
 
-    tgl.mainLoop();
+    tgl.mainLoop();*/
 }
 
 int main()

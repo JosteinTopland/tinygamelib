@@ -4,7 +4,7 @@
 
 FlappyBird::FlappyBird()
 {
-    TinyGameLibrary tgl(320, 200, 3);
+    /*TinyGameLibrary tgl(320, 200, 3);
 
     enum Object : TGL_Id { Bird, Background };
     vector<TGL_ObjectDefinition> spriteDefinitions = {
@@ -36,7 +36,7 @@ FlappyBird::FlappyBird()
     };
     tgl.setLevels(levels, 20, 20);
 
-    tgl.mainLoop();
+    tgl.mainLoop();*/
 }
 
 int main()
