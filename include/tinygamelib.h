@@ -35,8 +35,8 @@ enum class TGL_State {
 typedef int TGL_Id;
 
 typedef struct {
-    int x, y, w, h;
-} TGL_Rect;
+    int x, y, w, h, frames;
+} TGL_SpriteCoord;
 
 class TinyGameLibrary
 {
@@ -45,13 +45,10 @@ public:
     DllExport ~TinyGameLibrary();
     DllExport void mainLoop();
     DllExport void setSpritesheet(const string& spritesheet);
-    DllExport void addObject(TGL_Id id, const string& name, TGL_Type type, TGL_Rect spriteCoord);
+    DllExport void addObject(TGL_Id id, const string& name, TGL_Type type, map<TGL_Direction, TGL_SpriteCoord> spriteCoords);
     DllExport void addLevel(const string& name, int width, int height, const vector<vector<TGL_Id>>& map);
 
-private:
-    void readKeys();
-    void render();
-    
+private:    
     SDL_Window* m_window;
     SDL_Renderer* m_renderer;
     SDL_Texture* m_spritesheet;
@@ -72,7 +69,7 @@ private:
     typedef struct {
         string name;
         TGL_Type type;
-        TGL_Rect spriteCoord;
+        map<TGL_Direction, TGL_SpriteCoord> spriteCoords;
     } TGL_ObjectType;
     map<TGL_Id, TGL_ObjectType> m_objectTypes;
 
@@ -84,6 +81,10 @@ private:
     vector<TGL_Level> m_levels;
 
     TGL_Id m_playerIdx;
+
+    void readKeys();
+    void render();
+    void renderSprite(const TGL_Object& object);
 };
 
 #endif

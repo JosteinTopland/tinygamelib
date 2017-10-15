@@ -12,7 +12,12 @@ Lolo::Lolo()
     tgl.addObject(2, "Tree", TGL_Type::Block, { 32, 0, 16, 16 });
     tgl.addObject(3, "Heart", TGL_Type::Block, { 48, 0, 16, 16 });
     tgl.addObject(4, "Chest", TGL_Type::Block, { 64, 0, 16, 16 });
-    tgl.addObject(5, "Lolo", TGL_Type::Player, { 0, 16, 16, 16 });
+    tgl.addObject(5, "Lolo", TGL_Type::Player, {
+        { TGL_Direction::Left,{ 0, 16, 16, 16, 8 } },
+        { TGL_Direction::Right,{ 0, 16, 16, 16, 8 } },
+        { TGL_Direction::Up,{ 0, 16, 16, 16, 8 } },
+        { TGL_Direction::Down,{ 0, 16, 16, 16, 8 } }
+    });
     tgl.addObject(6, "Snake", TGL_Type::Enemy, { 0, 32, 16, 16 });
     
     vector<vector<TGL_Id>> map = {

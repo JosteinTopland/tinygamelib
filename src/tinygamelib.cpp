@@ -90,29 +90,36 @@ void TinyGameLibrary::render()
 {
     TGL_Level& level = m_levels.at(0);
 
-    for (int y = 0; y < level.h; y++) {
-        for (int x = 0; x < level.w; x++) {
-            int mapIdx = x + y * level.h;
+    for (int i = 0; i < level.h; i++) {
+        for (int j = 0; j < level.w; j++) {
+            int mapIdx = j + i * level.h;
             vector<int> layers = level.map.at(mapIdx);
-            for (unsigned int z = 0; z < layers.size(); z++) {
-                int objId = layers.at(z);
-                TGL_Rect rect = m_objectTypes.at(objId).spriteCoord;
-                SDL_Rect srcRect = { rect.x, rect.y, rect.w, rect.w };
-                SDL_Rect dstRect = { x * m_gridSize, y * m_gridSize, rect.w, rect.h };
-                SDL_RenderCopy(m_renderer, m_spritesheet, &srcRect, &dstRect);
+            for (unsigned int k = 0; k < layers.size(); k++) {
+                TGL_Object obj;
+                obj.x = j * m_gridSize;
+                obj.y = i * m_gridSize;
+                obj.objectTypeId = layers.at(k);
+                renderSprite(obj);
             }
         }
     }
 
-    for (auto& object : m_objects) {
-        TGL_Rect spriteCoord = m_objectTypes.at(object.objectTypeId).spriteCoord;
-        SDL_Rect srcRect = { spriteCoord.x, spriteCoord.y, spriteCoord.w, spriteCoord.h };
-        SDL_Rect dstRect = { object.x, object.y, srcRect.w, srcRect.h };
-        SDL_RenderCopy(m_renderer, m_spritesheet, &srcRect, &dstRect);
+    for (auto& obj : m_objects) {
+        renderSprite(obj);
     }
 
     SDL_RenderPresent(m_renderer);
 }
+
+void TinyGameLibrary::renderSprite(const TGL_Object& object)
+{
+    TGL_SpriteCoord spriteCoord = m_objectTypes.at(object.objectTypeId).spriteCoords.at(object.direction);
+    SDL_Rect srcRect = { spriteCoord.x, spriteCoord.y, spriteCoord.w, spriteCoord.h };
+    SDL_Rect dstRect = { object.x, object.y, srcRect.w, srcRect.h };
+    SDL_RenderCopy(m_renderer, m_spritesheet, &srcRect, &dstRect);
+
+}
+
 void TinyGameLibrary::setSpritesheet(const string& spritesheet)
 {
     SDL_Surface* temp = IMG_Load(spritesheet.c_str());
@@ -128,7 +135,7 @@ void TinyGameLibrary::setSpritesheet(const string& spritesheet)
     SDL_FreeSurface(temp);
 }
 
-void TinyGameLibrary::addObject(TGL_Id id, const string& name, TGL_Type type, TGL_Rect spriteCoord)
+void TinyGameLibrary::addObject(TGL_Id id, const string& name, TGL_Type type, vector<TGL_Direction, TGL_SpriteCoord> spriteCoord)
 {
     TGL_ObjectType objectType;
     objectType.name = name;
