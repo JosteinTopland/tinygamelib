@@ -1,8 +1,6 @@
 #ifndef TINYGAMELIB_H
 #define TINYGAMELIB_H
 
-#define DllExport __declspec(dllexport)
-
 #include <map>
 #include <string>
 #include <vector>
@@ -41,12 +39,12 @@ typedef struct {
 class TinyGameLibrary
 {
 public:
-    DllExport TinyGameLibrary(const string& name, int width, int height, int gridSize, int scale = 1);
-    DllExport ~TinyGameLibrary();
-    DllExport void mainLoop();
-    DllExport void setSpritesheet(const string& spritesheet);
-    DllExport void addObject(TGL_Id id, const string& name, TGL_Type type, map<TGL_Direction, TGL_SpriteCoord> spriteCoords);
-    DllExport void addLevel(const string& name, int width, int height, const vector<vector<TGL_Id>>& map);
+    TinyGameLibrary(const string& name, int width, int height, int gridSize, int scale = 1);
+    ~TinyGameLibrary();
+    void mainLoop();
+    void setSpritesheet(const string& spritesheet);
+    void addObject(TGL_Id id, const string& name, TGL_Type type, map<TGL_Direction, TGL_SpriteCoord> spriteCoords);
+    void addLevel(const string& name, int width, int height, const vector<vector<TGL_Id>>& map);
 
 private:    
     SDL_Window* m_window;

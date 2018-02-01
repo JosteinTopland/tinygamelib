@@ -66,20 +66,16 @@ void TinyGameLibrary::readKeys()
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_KEYDOWN) {
             switch (event.key.keysym.sym) {
-                case SDLK_ESCAPE:
+                case SDLK_q:
                     m_run = false;
                     break;
                 case SDLK_LEFT:
-                    m_objects.at(m_playerIdx).x--;
                     break;
                 case SDLK_RIGHT:
-                    m_objects.at(m_playerIdx).x++;
                     break;
                 case SDLK_UP:
-                    m_objects.at(m_playerIdx).y--;
                     break;
                 case SDLK_DOWN:
-                    m_objects.at(m_playerIdx).y++;
                     break;
             }
         }
@@ -92,10 +88,10 @@ void TinyGameLibrary::render()
 
     for (int i = 0; i < level.h; i++) {
         for (int j = 0; j < level.w; j++) {
-            int mapIdx = j + i * level.h;
+            int mapIdx = i * level.h + j;
             vector<int> layers = level.map.at(mapIdx);
             for (unsigned int k = 0; k < layers.size(); k++) {
-                TGL_Object obj;
+                TGL_Object obj = m_objects.at(0);
                 obj.x = j * m_gridSize;
                 obj.y = i * m_gridSize;
                 obj.objectTypeId = layers.at(k);
@@ -104,9 +100,9 @@ void TinyGameLibrary::render()
         }
     }
 
-    for (auto& obj : m_objects) {
+    /*for (auto& obj : m_objects) {
         renderSprite(obj);
-    }
+    }*/
 
     SDL_RenderPresent(m_renderer);
 }
@@ -135,12 +131,12 @@ void TinyGameLibrary::setSpritesheet(const string& spritesheet)
     SDL_FreeSurface(temp);
 }
 
-void TinyGameLibrary::addObject(TGL_Id id, const string& name, TGL_Type type, vector<TGL_Direction, TGL_SpriteCoord> spriteCoord)
+void TinyGameLibrary::addObject(TGL_Id id, const string& name, TGL_Type type, map<TGL_Direction, TGL_SpriteCoord> spriteCoord)
 {
     TGL_ObjectType objectType;
     objectType.name = name;
     objectType.type = type;
-    objectType.spriteCoord = spriteCoord;
+    objectType.spriteCoords = spriteCoord;
     m_objectTypes[id] = objectType;
 }
 
@@ -165,8 +161,9 @@ void TinyGameLibrary::addLevel(const string& name, int width, int height, const 
 
                 if (objtype.type == TGL_Type::Player) m_playerIdx = m_objects.size() - 1;
 
-                auto& v = level.map.at(i);
-                v.erase(v.begin() + (signed)j);
+                //?
+                //auto& v = level.map.at(i);
+                //v.erase(v.begin() + (signed)j);
             }
         }
     }
